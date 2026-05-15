@@ -1,0 +1,2776 @@
+---
+title: "MODELOS DISCRETOS DE PROBABILIDAD"  # Título principal del documento
+subtitle: "Ejercicios"  # Subtítulo del documento
+date: today  # Fecha actual en formato español
+author:  # Información sobre los autores
+  - name: Luz Andrea Lotero Jerez<br>German Mauricio Duarte Rodríguez<br>Wilson Ávila Barreto # Nombres de los autores, separados por <br> para salto de línea en HTML
+    affiliation: "Escuela De Administracion Publica"  # Afiliación de los autores (nombre de la universidad)
+    affiliation-url: "https://www.esap.edu.co/"  # URL que lleva a la página web de la universidad
+lang: es  # Idioma del documento, en este caso en español
+title-block-banner: "#e298ed"
+format:
+  html:  # Formato de salida en HTML
+    page-layout: full  # Configura el diseño de la página para usar el ancho completo
+    fontsize: 14pt  # Tamaño de la fuente del documento (16 puntos)
+    toc: true  # Activa la tabla de contenido
+    toc-location: right  # Ubicación de la tabla de contenido (a la izquierda)
+    number-sections: true  # Activa la numeración de las secciones
+    code-fold: true  # Permite ocultar el código, mostrando solo un resumen con "Ver código"
+    code-summary: "Ver código"  # El texto mostrado para los resúmenes de código oculto
+    html-math-method: katex  # Usa Katex para representar las fórmulas matemáticas en HTML
+    smooth-scroll: true  # Activa el desplazamiento suave al navegar por la página
+    link-external-icon: true  # Muestra un ícono en los enlaces externos
+    link-external-newwindow: true  # Los enlaces externos se abren en una nueva ventana
+    citations-hover: true  # Activa el efecto hover (desplegar) en las citas
+    footnotes-hover: true  # Activa el efecto hover (desplegar) en las notas al pie
+    theme: "dark"  # Opción de tema alternativo con mayor contraste
+    highlight-style: "Monokai"  # Resaltado de código con contraste
+    code-overflow: "scroll"  # Controla desbordamiento de código en pantallas pequeñas
+    favicon: "favicon.ico"  # Favicon para el sitio web
+    background-color: "#EDA698"  # Fondo azul baby para todo el documento
+    text-align: justify  # Alineación justificada para el texto
+    color: "#333333"  # Color del texto (gris oscuro para mejorar la legibilidad)
+    link-color: "#3892f8"  # Color de los enlaces (azul)
+    heading-color: "#3892f8"  # Color de los encabezados (azul)
+editor: visual  # Usa el editor visual para la creación del documento en RStudio
+knitr:
+  opts_chunk:  # Opciones predeterminadas para los bloques de código (chunks) de R
+    message: false  # Mostrar mensajes generados por el código
+    warning: false  # Mostrar advertencias si es necesario
+    fig.align: "center"  # Alinea las figuras generadas al centro
+    fig.width: 6  # Ajusta el tamaño de las figuras a 6 unidades
+    fig.height: 6  # Ajusta la altura de las figuras a 6 unidades
+    out.width: "70%"  # Asegura que las figuras se adapten al 70% del ancho disponible
+---
+
+```{=html}
+<div style="position: absolute; top: 10px; right: 10px;">
+  <img src="Logo_Esap.png" alt="Logo Universidad del Tolima" style="width: 150px; height: auto;">
+</div>
+```
+
+```{=html}
+<style type="text/css">
+  body {
+    font-size: 130%;
+    text-align: justify;
+  }
+</style>
+```
+
+# Paquetes
+
+```{r}
+# Verificar, instalar y activar el paquete "tidyverse"
+if (!require(tidyverse)) {
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+# Verificar, instalar y activar el paquete "kableExtra"
+if (!require(kableExtra)) {
+  install.packages("kableExtra")
+}
+library(kableExtra)
+
+# Verificar, instalar y activar el paquete "ggplot2"
+if (!require(ggplot2)) {
+  install.packages("ggplot2")
+}
+library(ggplot2)
+```
+
+# modelos probabilísticos
+
+Los modelos probabilísticos son herramientas matemáticas que se usan para predecir o analizar situaciones donde existe incertidumbre o azar. En vez de decir “esto pasará seguro”, calculan la probabilidad de que ocurra algo.
+
+Los **modelos probabilísticos** se clasifican principalmente según la **naturaleza de la variable aleatoria** y la forma en que representan la incertidumbre. Como estadístico, conviene organizarlos en varios criterios complementarios:
+
+**segun el tipo de variable aleatoria**
+
+**1. Modelos probabilísticos discretos**
+
+La variable toma valores **contables (enteros).**
+
+**Ejemplos:**
+
+- Distribución binomial
+
+- Distribución de Poisson
+
+- Distribución hipergeométrica
+
+**Aplicación:**
+
+Número de ciudadanos atendidos, cantidad de errores en trámites, etc.
+
+**2. Modelos probabilísticos continuos**
+
+La variable toma valores en **intervalos reales (infinitos).**
+
+**Ejemplos:**
+
+- Distribución normal
+
+- Distribución exponencial
+
+- Distribución uniforme Distrit
+
+**Aplicación:**
+
+Tiempo de atención, duración de procesos administrativos, etc.
+
+**modelos probabilisticos discretos**
+
+#Distribucion Binomial
+
+La Distribución Binomial es una distribución de probabilidad que se utiliza para calcular la probabilidad de obtener un número determinado de éxitos en varios intentos.
+
+**Características principales**
+
+**1. Es una distribución discreta**
+
+Solo toma valores enteros.
+
+Ejemplo:
+
+- 0 éxitos
+- 1 éxito
+- 2 éxitos
+
+**2. Tiene un número fijo de ensayos**
+
+La cantidad de experimentos o intentos está definida desde el inicio.
+
+**Ejemplo:**
+
+- Lanzar una moneda 10 veces.
+
+**3. Cada ensayo tiene solo dos resultados posibles**
+
+**Los resultados suelen llamarse:**
+
+- Éxito
+- Fracaso
+
+**Ejemplo:**
+
+- Cara o sello
+- Sí o no
+- Aprobar o reprobar
+
+**4. La probabilidad de éxito es constante**
+
+La probabilidad no cambia en cada ensayo.
+
+**Ejemplo:**
+
+Si la probabilidad de cara es 0.5, siempre será la misma en cada lanzamiento.
+
+**5. Los ensayos son independientes**
+
+Lo que ocurra en un intento no afecta a los demás.
+
+**Ejemplo:**
+
+El resultado de una moneda no cambia el siguiente lanzamiento.
+
+**Fórmula de la distribución binomial**
+
+$$P(X=x)=\binom{n}{x}p^x(1-p)^{n-x}$$
+
+Donde:
+
+\*(n): número de ensayos
+
+\*(x): número de éxitos
+
+\*(p): probabilidad de éxito
+
+- $\binom{n}{x}$: combinaciones
+
+------------------------------------------------------------------------
+
+**Medidas importantes**
+
+**Media (valor esperado):** $$\mu = np$$
+
+**varianza:** $$\sigma^2 = np(1-p)$$
+
+**Desviación estándar:** $$\sigma = \sqrt{np(1-p)}$$
+
+## .Ejemplo
+
+De acuerdo con un estudio publicado por un grupo de sociólogos de la Universidad de Massachusetts, aproximadamente 60% de los consumidores de Valium en el estado de Massachusetts empezaron a consumirlo a causa de problemas psicológicos. Calcule la probabilidad de que entre los siguientes 8 consumidores entrevistados de este estado:
+
+A. Exactamente 3 comenzaron a consumir Valium por problemas psicológicos.
+
+B. Al menos 5 comenzaron a consumir Valium por problemas psicológicos.
+
+## .Solución:
+
+::: panel-tabset
+## Tabla
+
+```{r}
+n <- 8
+p <- 0.60
+x <- 0:n
+fx <- round(dbinom(x, n, p),4)
+Fx <- round(cumsum(fx),4)
+df = data.frame(x, fx, Fx)
+Form.Basic <- c("striped", "bordered", "hover", "condensed", "responsive")
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  row_spec(0:9, bold = T, color = "#0d0d0d", background = "#eecafc")
+```
+
+## Función de probabilidad
+
+```{r}
+df_1 <- data.frame(x = x, fx = fx, xend = x, fxend = 0)
+
+ggplot(df_1, aes(x = x, y = fx)) +
+  geom_segment(aes(xend = xend, yend = fxend), color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de probabilidad binomial",
+       x = "x",
+       y = "f(x)")
+```
+
+## Función de distribución
+
+```{r}
+df_2 <- data.frame(x = x, Fx = Fx)
+
+ggplot(df_2, aes(x = x, y = Fx)) +
+  geom_step(color = "#e149f5", size = 1) +
+  geom_point(color = "#49f5ec", size = 2) +
+  labs(title = "Función de distribución binomial",
+       x = "x",
+       y = "F(X)")
+```
+:::
+
+## .Solución incisos
+
+::::: panel-tabset
+## Inciso A)
+
+Calcule la probabilidad de que entre los siguientes 8 consumidores entrevistados de este estado:
+
+A. Exactamente 3 comenzaron a consumir Valium por problemas psicológicos.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(3,size=n,prob=p),4)
+```
+
+La probabilidad de que exactamente 3 consumidores de Valium empezaron a consumir por problemas psicológicos es del 12.39%
+
+## GRÁFICA
+
+```{r}
+rango = 0:n
+df_3 = data.frame(x = rango, y = dbinom(rango, size=n, prob=p))
+ggplot(df_3, aes(x = x, y = y, fill=factor(ifelse(x==3,"Valor","Resto")))) +
+geom_bar(stat = "identity",width = 0.25) + xlab("x") + ylab("Cuantía") +
+ggtitle("Distribución Binomial") +
+scale_fill_manual(name = "", values=c("#b349f5","#02b8fa")) + theme_bw()
+```
+:::
+
+## Inciso B)
+
+Calcule la probabilidad de que entre los siguientes 8 consumidores entrevistados de este estado:
+
+B. Al menos 5 comenzaron a consumir Valium por problemas psicológicos.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(pbinom(4,size=n,prob=p, lower.tail=FALSE),4)
+```
+
+La probabilidad de que al menos 5 consumidores de Valium empezaron a consumir por problemas psicológicos es del 59.41%
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill=factor(ifelse(x>4,"Valor","Resto")))) +
+geom_bar(stat = "identity",width = 0.25) + xlab("x") + ylab("Cuantía") +
+ggtitle("Distribución Binomial") +
+scale_fill_manual(name = "", values=c("#b349f5","#02b8fa")) + theme_bw()
+```
+:::
+:::::
+
+## .Ejercicio 1
+
+Se sabe que el 60% de los alumnos de una universidad asisten a clases el viernes. En una encuesta a 8 alumnos de la universidad. a) por lo menos siete asistan a clase el viernes? b) por lo menos dos no asistan a clase.
+
+## .Solución:
+
+::: panel-tabset
+## Tabla
+
+```{r}
+n <- 8
+p <- 0.60
+x <- 0:n
+fx <- round(dbinom(x, n, p),4)
+Fx <- round(cumsum(fx),4)
+df = data.frame(x, fx, Fx)
+Form.Basic <- c("striped", "bordered", "hover", "condensed", "responsive")
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  row_spec(0:9, bold = T, color = "#0d0d0d", background = "#b349f5")
+```
+
+## Función de probabilidad
+
+```{r}
+df_1 <- data.frame(x = x, fx = fx, xend = x, fxend = 0)
+
+ggplot(df_1, aes(x = x, y = fx)) +
+  geom_segment(aes(xend = xend, yend = fxend), color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de probabilidad binomial",
+       x = "x",
+       y = "f(x)")
+```
+
+## Función de distribución
+
+```{r}
+df_2 <- data.frame(x = x, Fx = Fx)
+
+ggplot(df_2, aes(x = x, y = Fx)) +
+  geom_step(color = "#e149f5", size = 1) +
+  geom_point(color = "#49f5ec", size = 2) +
+  labs(title = "Función de distribución binomial",
+       x = "x",
+       y = "F(X)")
+```
+:::
+
+## .Solución incisos
+
+::::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que
+
+A por lo menos siete asistan a clase el viernes
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(7,size=n,prob=p),8)
+```
+
+Es decir:
+
+La probabilidad de que **exactamente 7 alumnos asistan** es **0.0896** o **8.96%**.
+
+## GRÁFICA
+
+```{r}
+rango = 0:n
+df_3 = data.frame(x = rango, y = dbinom(rango, size=n, prob=p))
+ggplot(df_3, aes(x = x, y = y, fill=factor(ifelse(x==7,"Valor","Resto")))) +
+geom_bar(stat = "identity",width = 0.25) + xlab("x") + ylab("Cuantía") +
+ggtitle("Distribución Binomial") +
+scale_fill_manual(name = "", values=c("#b349f5","#02b8fa")) + theme_bw()
+```
+:::
+
+## Inciso B)
+
+B. por lo menos dos no asistan a clase.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(pbinom(2,size=n,prob=p, lower.tail=FALSE),8)
+```
+
+Eso significa que la probabilidad de que **más de 2 alumnos asistan a clase** es **0.9501** o **95.01%**.
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill=factor(ifelse(x>2,"Valor","Resto")))) +
+geom_bar(stat = "identity",width = 0.25) + xlab("x") + ylab("Cuantía") +
+ggtitle("Distribución Binomial") +
+scale_fill_manual(name = "", values=c("#b349f5","#02b8fa")) + theme_bw()
+```
+:::
+:::::
+
+## .Ejercicio 2
+
+Según los registros universitarios fracasa el 5% de los alumnos de cierto curso. ¿cuál es la probabilidad de que, de 6 estudiantes seleccionados al azar, menos de 3 hayan fracasado?
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+n <- 6
+p <- 0.05
+x <- 0:n
+fx <- round(dbinom(x, n, p),4)
+Fx <- round(cumsum(fx),4)
+df = data.frame(x, fx, Fx)
+Form.Basic <- c("striped", "bordered", "hover", "condensed", "responsive")
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  row_spec(0:7, bold = T, color = "#0d0d0d", background = "#eecafc")
+```
+
+## Función de probabilidad
+
+```{r}
+df_1 <- data.frame(x = x, fx = fx, xend = x, fxend = 0)
+
+ggplot(df_1, aes(x = x, y = fx)) +
+  geom_segment(aes(xend = xend, yend = fxend), color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de probabilidad binomial",
+       x = "x",
+       y = "f(x)")
+```
+
+## Función de distribución
+
+```{r}
+df_2 <- data.frame(x = x, Fx = Fx)
+
+ggplot(df_2, aes(x = x, y = Fx)) +
+  geom_step(color = "#e149f5", size = 1) +
+  geom_point(color = "#49f5ec", size = 2) +
+  labs(title = "Función de distribución binomial",
+       x = "x",
+       y = "F(X)")
+```
+:::
+
+## .Solución incisos
+
+::::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que, de 6 estudiantes seleccionados al azar, menos de 3 hayan fracasado?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(3,size=n,prob=p),6)
+```
+
+Esto representa la probabilidad de que exactamente 3 de los 6 estudiantes hayan fracasado.
+
+## GRÁFICA
+
+```{r}
+rango = 0:n
+df_3 = data.frame(x = rango, y = dbinom(rango, size=n, prob=p))
+ggplot(df_3, aes(x = x, y = y, fill=factor(ifelse(x==3,"Valor","Resto")))) +
+geom_bar(stat = "identity",width = 0.25) + xlab("x") + ylab("Cuantía") +
+ggtitle("Distribución Binomial") +
+scale_fill_manual(name = "", values=c("#b349f5","#02b8fa")) + theme_bw()
+```
+:::
+
+## Inciso B)
+
+¿Cuál es la probabilidad de que, de 6 estudiantes seleccionados al azar, menos de 3 hayan fracasado?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(3,size=n,prob=p),6)
+```
+
+Esto equivale aproximadamente a: 00.21%
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill=factor(ifelse(x>3,"Valor","Resto")))) +
+geom_bar(stat = "identity",width = 0.25) + xlab("x") + ylab("Cuantía") +
+ggtitle("Distribución Binomial") +
+scale_fill_manual(name = "", values=c("#b349f5","#02b8fa")) + theme_bw()
+```
+:::
+:::::
+
+## .Ejercicio 3
+
+En promedio, el 10% de las varillas de madera usadas en cierto producto presentan problemas para ser usadas. ¿cuál es la probabilidad de que en un paquete de 15 varillas, a) encuentre exactamente 5 con defectos. b) por lo menos 10 estén nudosas, c) no más de 4 estén nudosas.
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+n <- 15
+p <- 0.10
+x <- 0:n
+fx <- round(dbinom(x, n, p),4)
+Fx <- round(cumsum(fx),4)
+df = data.frame(x, fx, Fx)
+Form.Basic <- c("striped", "bordered", "hover", "condensed", "responsive")
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  row_spec(0:16, bold = T, color = "#0d0d0d", background = "#eecafc")
+```
+
+## Función de probabilidad
+
+```{r}
+rango = 0:n
+df_3 = data.frame(x = rango, y = dbinom(rango, size=n, prob=p))
+ggplot(df, aes(x = x, y = fx)) +
+  geom_point(color = "#b349f5", size = 3) +
+  geom_segment(aes(x = x, xend = x, y = 0, yend = fx), color = "#02b8fa", size = 1) +
+  labs(title = "Función de Probabilidad Binomial",
+       x = "Número de camiones con ponchamientos",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+ggplot(df, aes(x = x, y = Fx)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de Distribución Binomial",
+       x = "Número de camiones con ponchamientos",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que en un paquete de 15 varillas, encuentre exactamente 5 con defectos.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(5,size=n,prob=p),15)
+```
+
+Es decir, hay un **0.10%** de probabilidad de encontrar exactamente 5 varillas defectuosas.
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill = factor(ifelse(x >= 5 & x <= 15, "Valor", "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de camiones con ponchamientos") + ylab("Probabilidad") +
+  ggtitle("Distribución Binomial") +
+  scale_fill_manual(name = "", values = c("Valor" = "#b349f5", "Resto" = "#02b8fa")) +
+  theme_bw() 
+```
+:::
+
+## Inciso B)
+
+Por lo menos 10 estén nudosas
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+options(scipen = 999)
+round(dbinom(10, size = n, prob = p),15)
+```
+
+La probabilidad de obtener por los menos 10 nudosas es de aproximadamente 0.00001773241%.
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill = factor(ifelse(x < 15, "Valor", "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de camiones con ponchamientos") + ylab("Probabilidad") +
+  ggtitle("Distribución Binomial") +
+  scale_fill_manual(name = "", values = c("Valor" = "#b349f5", "Resto" = "#02b8fa")) +
+  theme_bw() 
+```
+:::
+
+## Inciso C)
+
+No más de 4 estén nudosas.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(4, size = n, prob = p),15)
+```
+
+La probabilidad es de 0.0428%
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill = factor(ifelse(x >= 4, "Valor", "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de camiones con ponchamientos") + ylab("Probabilidad") +
+  ggtitle("Distribución Binomial") +
+  scale_fill_manual(name = "", values = c("Valor" = "#b349f5", "Resto" = "#02b8fa")) +
+  theme_bw()
+```
+:::
+::::::
+
+## .Ejercicio 4
+
+Una compañía de seguros considera que alrededor del 25% de los carros se accidentan cada año. ¿Cuál es la probabilidad de que por lo menos 3 de una muestra de 7 vehículos asegurados, se haya accidentado?
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+n <- 7
+p <- 0.25
+x <- 0:n
+fx <- round(dbinom(x, n, p),4)
+Fx <- round(cumsum(fx),4)
+df = data.frame(x, fx, Fx)
+Form.Basic <- c("striped", "bordered", "hover", "condensed", "responsive")
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  row_spec(0:8, bold = T, color = "#0d0d0d", background = "#eecafc")
+```
+
+## Función de probabilidad
+
+```{r}
+rango = 0:n
+df_3 = data.frame(x = rango, y = dbinom(rango, size=n, prob=p))
+ggplot(df, aes(x = x, y = fx)) +
+  geom_point(color = "#b349f5", size = 3) +
+  geom_segment(aes(x = x, xend = x, y = 0, yend = fx), color = "#02b8fa", size = 1) +
+  labs(title = "Función de Probabilidad Binomial",
+       x = "Número de camiones con ponchamientos",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+ggplot(df, aes(x = x, y = Fx)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de Distribución Binomial",
+       x = "Número de camiones con ponchamientos",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que por lo menos 3 de una muestra de 7 vehículos asegurados, se haya accidentado?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(1 - pbinom(2, size = 7, prob = 0.25),4)
+```
+
+La probabilidad es del 24.36%
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill = factor(ifelse(x >= 3 & x <= 7, "Valor", "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de camiones con ponchamientos") + ylab("Probabilidad") +
+  ggtitle("Distribución Binomial") +
+  scale_fill_manual(name = "", values = c("Valor" = "#b349f5", "Resto" = "#02b8fa")) +
+  theme_bw() 
+```
+:::
+::::
+
+## .Ejercicio 5
+
+Los registros muestran que 30% de los pacientes admitidos en una clínica, no pagan sus facturas y eventualmente se condona la deuda. Suponga que llegan 4 nuevos pacientes a la clínica, a) cual es la probabilidad de que se tenga que perdonar la deuda de uno de los cuatro. b) los cuatro pacientes paguen sus facturas.
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+n <- 4
+p <- 0.30
+x <- 0:n
+fx <- round(dbinom(x, n, p),4)
+Fx <- round(cumsum(fx),4)
+df = data.frame(x, fx, Fx)
+Form.Basic <- c("striped", "bordered", "hover", "condensed", "responsive")
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  row_spec(0:5, bold = T, color = "#0d0d0d", background = "#eecafc")
+```
+
+## Función de probabilidad
+
+```{r}
+rango = 0:n
+df_3 = data.frame(x = rango, y = dbinom(rango, size=n, prob=p))
+ggplot(df, aes(x = x, y = fx)) +
+  geom_point(color = "#b349f5", size = 3) +
+  geom_segment(aes(x = x, xend = x, y = 0, yend = fx), color = "#02b8fa", size = 1) +
+  labs(title = "Función de Probabilidad Binomial",
+       x = "Número de camiones con ponchamientos",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+ggplot(df, aes(x = x, y = Fx)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de Distribución Binomial",
+       x = "Número de camiones con ponchamientos",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+::::: panel-tabset
+## Inciso A)
+
+Cual es la probabilidad de que se tenga que perdonar la deuda de uno de los cuatro?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(1, size = 4, prob = 0.30),4)
+```
+
+La probabilidad es de 41.16%
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill = factor(ifelse(x >= 1 & x <= 4, "Valor", "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de camiones con ponchamientos") + ylab("Probabilidad") +
+  ggtitle("Distribución Binomial") +
+  scale_fill_manual(name = "", values = c("Valor" = "#b349f5", "Resto" = "#02b8fa")) +
+  theme_bw() 
+```
+:::
+
+## Inciso B)
+
+Los cuatro pacientes paguen sus facturas.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+round(dbinom(0, size = 4, prob = 0.30),4)
+```
+
+La probabilidad es de 24.01%
+
+## GRÁFICA
+
+```{r}
+ggplot(df_3, aes(x = x, y = y, fill = factor(ifelse(x < 4, "Valor", "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de camiones con ponchamientos") + ylab("Probabilidad") +
+  ggtitle("Distribución Binomial") +
+  scale_fill_manual(name = "", values = c("Valor" = "#b349f5", "Resto" = "#02b8fa")) +
+  theme_bw() 
+```
+:::
+:::::
+
+# .Distribucion De Poisson
+
+La **distribución de Poisson** es una distribución de probabilidad discreta que se utiliza para modelar el número de veces que ocurre un evento en un intervalo fijo de tiempo, espacio, longitud o área, cuando los eventos ocurren de manera aleatoria e independiente.
+
+Se aplica cuando queremos responder preguntas como:
+
+- ¿Cuántas llamadas llegan a un call center en una hora?
+- ¿Cuántos accidentes ocurren en una avenida por día?
+- ¿Cuántos errores tiene una página escrita?
+- ¿Cuántos clientes llegan a una tienda en 10 minutos?
+
+La variable aleatoria se representa generalmente por $X$, donde:
+
+$$X \sim Poisson(\lambda)$$
+
+y $\lambda$ representa el número promedio de ocurrencias del evento.
+
+**Características principales de la distribución de Poisson**
+
+**1. Es una distribución discreta**
+
+La variable solo puede tomar valores enteros no negativos:
+
+$$0,1,2,3,\dots$$
+
+Por ejemplo:
+
+- 0 llamadas
+- 1 accidente
+- 2 clientes
+- 5 errores
+
+**2. Modela eventos aleatorios**
+
+Los eventos ocurren de manera impredecible, pero con una tasa promedio constante.
+
+Ejemplo:
+
+- promedio de 3 llamadas por minuto
+- promedio de 2 accidentes por semana
+
+**3. Los eventos son independientes**
+
+La ocurrencia de un evento no afecta la probabilidad de otro.
+
+Ejemplo: Si entra un cliente a una tienda, eso no cambia la probabilidad de que llegue otro cliente.
+
+**4. La tasa promedio es constante**
+
+El valor $\lambda$ permanece estable durante el intervalo estudiado.
+
+Ejemplo:
+
+- promedio de 4 correos por hora.
+
+Si cambia mucho en el tiempo, Poisson deja de ser adecuado.
+
+**5. La media y la varianza son iguales**
+
+Una propiedad fundamental:
+
+$$\mu = \lambda$$
+
+y
+
+$$\sigma^2 = \lambda$$
+
+Es decir:
+
+- Media = Varianza = $\lambda$
+
+Ejemplo: Si $\lambda = 5$:
+
+- media = 5
+- varianza = 5
+
+**6. Se usa para eventos raros**
+
+Es muy útil cuando los eventos tienen baja probabilidad, pero hay muchas oportunidades de ocurrencia.
+
+Ejemplos:
+
+- defectos en producción
+- accidentes
+- fallas de máquinas
+- enfermedades raras
+
+**Función de probabilidad**
+
+La fórmula de Poisson es:
+
+$$P(X=x)=\frac{e^{-\lambda}\lambda^x}{x!}$$
+
+Donde:
+
+- $P(X=x)$: probabilidad de observar exactamente $x$ eventos
+- $e$: constante de Euler $(\approx 2.71828)$
+- $\lambda$: media de ocurrencias
+- $x$: número de eventos
+- $x!$: factorial de $x$
+
+**Condiciones para usar Poisson**
+
+La distribución de Poisson se utiliza cuando:
+
+1.  Los eventos son independientes.
+2.  Los eventos ocurren aleatoriamente.
+3.  Se analiza un intervalo fijo.
+4.  La tasa promedio es constante.
+5.  Dos eventos no ocurren exactamente al mismo tiempo.
+
+**Ejemplo práctico**
+
+Suponga que una clínica recibe en promedio 4 emergencias por hora.
+
+Entonces:
+
+$$\lambda = 4$$
+
+La distribución de Poisson puede calcular:
+
+- probabilidad de recibir exactamente 2 emergencias,
+- más de 5,
+- ninguna emergencia, etc.
+
+## .Ejercicio 6
+
+El conmutador de un hospital recibe en promedio 20 llamadas cada dos minutos. Cuál es la probabilidad de que lleguen como máximo dos llamadas en un periodo de 15 segundos.
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+n <- 6 
+x <- 0:n
+fx <- round(dpois(x, lambda = 2.5), 4)  
+Fx <- round(cumsum(fx), 4)
+df <- data.frame(x, fx, Fx)
+Form.Basic <- c("striped", "bordered", "hover", "condensed", "responsive")
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = F) %>%
+  column_spec(1, bold = T) %>%
+  row_spec(0:6, bold = T, color = "#0d0d0d", background = "#57d7fa")
+```
+
+## Función de probabilidad
+
+```{r}
+promedio_accidentes <- 2.5  
+x <- 0:5
+probabilidad <- round(dpois(x, lambda = promedio_accidentes), 4)  
+plot(x = x, y = probabilidad, xlab = "Número de Accidentes", ylab = "Probabilidad",
+     main = "Función de probabilidad Poisson",
+     pch = 19, col = "#b349f5")
+segments(x0 = x, y0 = 0, x1 = x, y1 = probabilidad, lwd = 3, col = "#02b8fa")
+```
+
+## Función de distribución
+
+```{r}
+promedio_accidentes <- 2.5  
+x <- 0:5
+probabilidad <- round(dpois(x, lambda = promedio_accidentes), 4)  
+prob_acumulada <- cumsum(probabilidad)
+plot(x = c(0, x), y = c(0, prob_acumulada), type = "s",
+     xlab = "Número de Accidentes", ylab = "Probabilidad Acumulada",
+     main = "Función de distribución  Poisson", col = "#b349f5", lwd = 2)
+points(x, prob_acumulada, col = "#02b8fa", pch = 19)
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+Cuál es la probabilidad de que lleguen como máximo dos llamadas en un periodo de 15 segundos.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+lambda <- 2.5
+k <- 2
+probabilidad <- round(dpois(k, lambda), 4)
+print(probabilidad)
+```
+
+la probabilidad es de 25.65%
+
+## GRÁFICA
+
+```{r}
+rango <- 0:5  
+prob_poisson <- round(dpois(rango, lambda = promedio_accidentes), 4)
+df_3 <- data.frame(numero_accidentes = rango, probabilidad = prob_poisson)
+ggplot(df_3, aes(x = numero_accidentes, y = probabilidad, fill = factor(ifelse(numero_accidentes == 5, "Valor", "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de Accidentes") + ylab("Cuantía") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "", values = c("#b349f5", "#02b8fa")) 
+```
+:::
+::::
+
+## .Ejercicio 7
+
+Los clientes llegan a una exhibición a razón de 6,8 clientes / hora Calcule la probabilidad de que a) en la primera media hora por lo menos lleguen dos clientes; b) en cualquier hora dada llegue más de uno.
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Promedio de clientes en media hora
+lambda <- 3.4
+
+# Valores de X
+x <- 0:6
+
+# Probabilidades Poisson
+fx <- round(dpois(x, lambda = lambda), 4)
+
+# Probabilidad acumulada
+Fx <- round(cumsum(fx), 4)
+
+# Tabla
+df <- data.frame(
+  numero_clientes = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Estilo de tabla
+Form.Basic <- c("striped", "bordered", "hover",
+                "condensed", "responsive")
+
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:6,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#57d7fa")
+```
+
+## Función de probabilidad
+
+```{r}
+# Valores de X
+x <- 0:6
+
+# Probabilidades Poisson
+probabilidad <- round(dpois(x, lambda = 3.4), 4)
+
+# Data frame
+df_1 <- data.frame(
+  numero_clientes = x,
+  probabilidad = probabilidad,
+  numero_clientes_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = numero_clientes,
+           y = probabilidad)) +
+  geom_segment(aes(xend = numero_clientes_end,
+                   yend = probabilidad_end),
+               color = "#b349f5",
+               size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de probabilidad Poisson",
+       x = "Número de clientes",
+       y = "Probabilidad")
+```
+
+## Función de distribucion
+
+```{r}
+# Valores de X
+x <- 0:6
+
+# Probabilidad acumulada
+prob_acumulada <- round(ppois(x, lambda = 3.4), 4)
+
+# Data frame
+df_2 <- data.frame(
+  numero_clientes = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = numero_clientes,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de distribución acumulada Poisson",
+       x = "Número de clientes",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+::::: panel-tabset
+## Inciso A)
+
+En la primera media hora por lo menos lleguen dos clientes
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Promedio de clientes en media hora
+lambda <- 3.4
+
+# Queremos la probabilidad de exactamente 2 clientes
+k <- 2
+
+# Probabilidad Poisson
+probabilidad <- round(dpois(k, lambda), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 19.29
+
+## GRÁFICA
+
+```{r}
+# Promedio de clientes en media hora
+lambda <- 3.4
+
+# Valores de X
+rango <- 0:6  
+
+# Probabilidades Poisson
+prob_poisson <- round(dpois(rango, lambda = lambda), 4)
+
+# Data frame
+df_3 <- data.frame(
+  numero_clientes = rango,
+  probabilidad = prob_poisson
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = numero_clientes,
+           y = probabilidad,
+           fill = factor(ifelse(numero_clientes == 2,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de clientes") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "",
+                    values = c("#b349f5", "#02b8fa"))
+```
+:::
+
+## Inciso B)
+
+En cualquier hora dada llegue más de uno.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Promedio de clientes por hora
+lambda <- 6.8
+
+# Queremos calcular P(X <= 1)
+k <- 2
+
+# Probabilidad acumulada
+probabilidad <- sum(dpois(0:(k-1), lambda))
+
+# Resultado
+round(probabilidad, 4)
+```
+
+La probabilidad es de 00.87%
+
+## GRÁFICA
+
+```{r}
+# Promedio de clientes por hora
+lambda <- 6.8
+
+# Valores de X
+rango <- 0:10
+
+# Probabilidades Poisson
+prob_poisson <- round(dpois(rango, lambda = lambda), 4)
+
+# Probabilidad acumulada hasta 1 cliente
+prob_acumulada_hasta_1 <- sum(prob_poisson[1:2])
+
+# Data frame
+df_4 <- data.frame(
+  numero_clientes = rango,
+  probabilidad = prob_poisson
+)
+
+# Gráfica
+ggplot(df_4,
+       aes(x = numero_clientes,
+           y = probabilidad,
+           fill = factor(ifelse(numero_clientes <= 1,
+                                "valor",
+                                "resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de clientes") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "",
+                    values = c("#b349f5", "#02b8fa")) +
+  theme_bw()
+```
+:::
+:::::
+
+## .Ejercicio 8
+
+El número promedio de urgencias que llega a un hospital en una hora es de 12. Cuál es la probabilidad de que en un minuto lleguen por lo menos 2 urgencias. ¿Cuál es el número de urgencias esperado por minuto?
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Promedio de urgencias por minuto
+lambda <- 0.2
+
+# Valores de X
+x <- 0:5
+
+# Probabilidades Poisson
+fx <- round(dpois(x, lambda = lambda), 4)
+
+# Probabilidad acumulada
+Fx <- round(cumsum(fx), 4)
+
+# Tabla
+df <- data.frame(
+  numero_urgencias = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Estilo de tabla
+Form.Basic <- c("striped", "bordered", "hover",
+                "condensed", "responsive")
+
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:6,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#57d7fa")
+```
+
+## Función de probabilidad
+
+```{r}
+# Valores de X
+x <- 0:5
+
+# Probabilidades Poisson
+probabilidad <- round(dpois(x, lambda = 0.2), 4)
+
+# Data frame
+df_1 <- data.frame(
+  numero_urgencias = x,
+  probabilidad = probabilidad,
+  numero_urgencias_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = numero_urgencias,
+           y = probabilidad)) +
+  geom_segment(aes(xend = numero_urgencias_end,
+                   yend = probabilidad_end),
+               color = "#b349f5",
+               size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de probabilidad Poisson",
+       x = "Número de urgencias",
+       y = "Probabilidad")
+```
+
+## Función de distribucion
+
+```{r}
+# Valores de X
+x <- 0:5
+
+# Probabilidad acumulada
+prob_acumulada <- round(ppois(x, lambda = 0.2), 4)
+
+# Data frame
+df_2 <- data.frame(
+  numero_urgencias = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = numero_urgencias,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de distribución acumulada Poisson",
+       x = "Número de urgencias",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+::::: panel-tabset
+## Inciso A)
+
+Cuál es la probabilidad de que en un minuto lleguen por lo menos 2 urgencias.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Promedio de urgencias por minuto
+lambda <- 0.2
+
+# Queremos calcular la probabilidad de exactamente 2 urgencias
+k <- 2
+
+# Probabilidad Poisson
+probabilidad <- round(dpois(k, lambda), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 01.64%
+
+## GRÁFICA
+
+```{r}
+# Promedio de urgencias por minuto
+lambda <- 0.2
+
+# Valores de X
+rango <- 0:5  
+
+# Probabilidades Poisson
+prob_poisson <- round(dpois(rango, lambda = lambda), 4)
+
+# Data frame
+df_3 <- data.frame(
+  numero_urgencias = rango,
+  probabilidad = prob_poisson
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = numero_urgencias,
+           y = probabilidad,
+           fill = factor(ifelse(numero_urgencias == 2,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de urgencias") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "",
+                    values = c("#b349f5", "#02b8fa"))
+```
+:::
+
+## Inciso B)
+
+¿Cuál es el número de urgencias esperado por minuto?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Número esperado de urgencias por minuto
+lambda <- 0.2
+
+# Valor esperado en una distribución Poisson
+esperado <- lambda
+
+# Resultado
+round(esperado, 4)
+```
+
+Es de 2/min
+
+## GRÁFICA
+
+```{r}
+# Promedio de urgencias por minuto
+lambda <- 0.2
+
+# Valores de X
+rango <- 0:5
+
+# Probabilidades Poisson
+prob_poisson <- round(dpois(rango, lambda = lambda), 4)
+
+# Probabilidad acumulada hasta 2 urgencias
+prob_acumulada_hasta_2 <- sum(prob_poisson[1:3])
+
+# Data frame
+df_4 <- data.frame(
+  numero_urgencias = rango,
+  probabilidad = prob_poisson
+)
+
+# Gráfica
+ggplot(df_4,
+       aes(x = numero_urgencias,
+           y = probabilidad,
+           fill = factor(ifelse(numero_urgencias < 3,
+                                "valor",
+                                "resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de urgencias") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "",
+                    values = c("#b349f5", "#02b8fa")) +
+  theme_bw()
+```
+:::
+:::::
+
+## .Ejercicio 9
+
+Las estadísticas indican que en una fábrica se presentan en promedio 10 accidentes por trimestre. Determine la probabilidad de que no haya más de 12 accidentes en el último trimestre.
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Promedio de accidentes por trimestre
+lambda <- 10
+
+# Valores de X
+x <- 0:12
+
+# Probabilidades Poisson
+fx <- round(dpois(x, lambda = lambda), 4)
+
+# Probabilidad acumulada
+Fx <- round(cumsum(fx), 4)
+
+# Tabla
+df <- data.frame(
+  numero_accidentes = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Estilo de tabla
+Form.Basic <- c("striped", "bordered", "hover",
+                "condensed", "responsive")
+
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:12,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#57d7fa")
+```
+
+## Función de distribucion
+
+```{r}
+# Valores de X
+x <- 0:12
+
+# Probabilidades Poisson
+probabilidad <- round(dpois(x, lambda = 10), 4)
+
+# Data frame
+df_1 <- data.frame(
+  numero_accidentes = x,
+  probabilidad = probabilidad,
+  numero_accidentes_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = numero_accidentes,
+           y = probabilidad)) +
+  geom_segment(aes(xend = numero_accidentes_end,
+                   yend = probabilidad_end),
+               color = "#b349f5",
+               size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de probabilidad Poisson",
+       x = "Número de accidentes",
+       y = "Probabilidad")
+```
+
+## Función de probabilidad
+
+```{r}
+# Valores de X
+x <- 0:12
+
+# Probabilidad acumulada
+prob_acumulada <- round(ppois(x, lambda = 10), 4)
+
+# Data frame
+df_2 <- data.frame(
+  numero_accidentes = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = numero_accidentes,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de distribución acumulada Poisson",
+       x = "Número de accidentes",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+Determine la probabilidad de que no haya más de 12 accidentes en el último trimestre.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Promedio de accidentes por trimestre
+lambda <- 10
+
+# Queremos calcular la probabilidad de exactamente 12 accidentes
+k <- 12
+
+# Probabilidad Poisson
+probabilidad <- round(dpois(k, lambda), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 09.48%
+
+## GRÁFICA
+
+```{r}
+# Promedio de accidentes por trimestre
+lambda <- 10
+
+# Valores de X
+rango <- 0:12  
+
+# Probabilidades Poisson
+prob_poisson <- round(dpois(rango, lambda = lambda), 4)
+
+# Data frame
+df_3 <- data.frame(
+  numero_accidentes = rango,
+  probabilidad = prob_poisson
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = numero_accidentes,
+           y = probabilidad,
+           fill = factor(ifelse(numero_accidentes == 12,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de accidentes") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "",
+                    values = c("#b349f5", "#02b8fa"))
+```
+:::
+::::
+
+## .Ejercicio 10
+
+El número de personas que ingresan a la unidad de cuidados intensivos de un hospital en un día cualquiera, es de 5 personas diarias. ¿Cuál es la probabilidad de que el número de personas que ingresan a la unidad de cuidados intensivos en un día particular sea menor o igual a 2 personas?
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Promedio de ingresos diarios
+lambda <- 5
+
+# Valores de X
+x <- 0:5
+
+# Probabilidades Poisson
+fx <- round(dpois(x, lambda = lambda), 4)
+
+# Probabilidad acumulada
+Fx <- round(cumsum(fx), 4)
+
+# Tabla
+df <- data.frame(
+  numero_personas = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Estilo de tabla
+Form.Basic <- c("striped", "bordered", "hover",
+                "condensed", "responsive")
+
+kable(df, align = "c") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:5,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#57d7fa")
+```
+
+## Función de probabilidad
+
+```{r}
+# Valores de X
+x <- 0:2
+
+# Probabilidades Poisson
+probabilidad <- round(dpois(x, lambda = 5), 4)
+
+# Data frame
+df_1 <- data.frame(
+  numero_personas = x,
+  probabilidad = probabilidad,
+  numero_personas_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = numero_personas,
+           y = probabilidad)) +
+  geom_segment(aes(xend = numero_personas_end,
+                   yend = probabilidad_end),
+               color = "#b349f5",
+               size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de probabilidad Poisson",
+       x = "Número de personas",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+# Valores de X
+x <- 0:2
+
+# Probabilidad acumulada
+prob_acumulada <- round(ppois(x, lambda = 5), 4)
+
+# Data frame
+df_2 <- data.frame(
+  numero_personas = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = numero_personas,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 2) +
+  labs(title = "Función de distribución acumulada Poisson",
+       x = "Número de personas",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que el número de personas que ingresan a la unidad de cuidados intensivos en un día particular sea menor o igual a 2 personas?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Promedio de ingresos diarios a UCI
+lambda <- 5
+
+# Queremos calcular la probabilidad de exactamente 2 personas
+k <- 2
+
+# Probabilidad Poisson
+probabilidad <- round(dpois(k, lambda), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 08.42%
+
+## GRÁFICA
+
+```{r}
+# Promedio de ingresos diarios a UCI
+lambda <- 5
+
+# Valores de X
+rango <- 0:6  
+
+# Probabilidades Poisson
+prob_poisson <- round(dpois(rango, lambda = lambda), 4)
+
+# Data frame
+df_3 <- data.frame(
+  numero_personas = rango,
+  probabilidad = prob_poisson
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = numero_personas,
+           y = probabilidad,
+           fill = factor(ifelse(numero_personas == 2,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de personas") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "",
+                    values = c("#b349f5", "#02b8fa"))
+```
+:::
+::::
+
+## .Ejercicio 11
+
+En promedio una casa de cada 2000 en cierta zona de Barranquilla se incendia durante el año, si hay 6000 casas en dicha zona ¿Cuál es la probabilidad de que más de 3 casas se incendien durante el año?
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Datos del problema
+lambda <- 3
+
+# Valores de X
+x <- 0:6
+
+# Probabilidades Poisson
+fx <- round(dpois(x, lambda = lambda), 4)
+
+# Probabilidad acumulada
+Fx <- round(ppois(x, lambda = lambda), 4)
+
+# Tabla de distribución
+df <- data.frame(
+  numero_casas_incendiadas = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Mostrar tabla
+kable(df, align = "c",
+      caption = "Distribución de Poisson - Casas incendiadas") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:6,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#57d7fa")
+```
+
+## Función de probabilidad
+
+```{r}
+# Valores de X
+x <- 0:6
+
+# Probabilidades Poisson
+probabilidad <- round(dpois(x, lambda = 3), 4)
+
+# Data frame
+df_1 <- data.frame(
+  numero_casas_incendiadas = x,
+  probabilidad = probabilidad,
+  numero_casas_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = numero_casas_incendiadas,
+           y = probabilidad)) +
+  geom_segment(aes(xend = numero_casas_end,
+                   yend = probabilidad_end),
+               color = "#b349f5",
+               size = 1) +
+  geom_point(color = "#02b8fa", size = 3) +
+  labs(title = "Función de probabilidad Poisson",
+       x = "Número de casas incendiadas",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+# Valores de X
+x <- 0:6
+
+# Probabilidad acumulada
+prob_acumulada <- round(ppois(x, lambda = 3), 4)
+
+# Data frame
+df_2 <- data.frame(
+  numero_casas_incendiadas = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = numero_casas_incendiadas,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#b349f5", size = 1) +
+  geom_point(color = "#02b8fa", size = 3) +
+  labs(title = "Función de distribución acumulada Poisson",
+       x = "Número de casas incendiadas",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que más de 3 casas se incendien durante el año?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Promedio de casas incendiadas
+lambda <- 3
+
+# Queremos calcular la probabilidad de exactamente 3 casas incendiadas
+k <- 3
+
+# Probabilidad Poisson
+probabilidad <- round(dpois(k, lambda), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 22.40%
+
+## GRÁFICA
+
+```{r}
+# Promedio de casas incendiadas durante el año
+lambda <- 3
+
+# Valores de X
+rango <- 0:6  
+
+# Probabilidades Poisson
+prob_poisson <- round(dpois(rango, lambda = lambda), 4)
+
+# Data frame
+df_3 <- data.frame(
+  numero_casas_incendiadas = rango,
+  probabilidad = prob_poisson
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = numero_casas_incendiadas,
+           y = probabilidad,
+           fill = factor(ifelse(numero_casas_incendiadas == 3,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de casas incendiadas") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución de Poisson") +
+  scale_fill_manual(name = "",
+                    values = c("#b349f5", "#02b8fa"))
+```
+:::
+::::
+
+
+# .Distribución Hipergeométrica
+
+La **Distribución hipergeométrica** se usa cuando:
+
+- Se extraen elementos **sin reemplazo**.
+- La población es **finita**.
+- Hay dos tipos de elementos: “éxito” y “fracaso”.
+
+**Fórmula**
+
+$$P(X=x)=\frac{\binom{K}{x}\binom{N-K}{n-x}}{\binom{N}{n}}$$ \
+
+**Significado de las letras**
+
+- $N$ = tamaño de la población
+- $K$ = número de éxitos en la población
+- $n$ = tamaño de la muestra
+- $x$ = éxitos deseados en la muestra
+
+**Ejemplo**
+
+En una caja hay 12 bombillos:
+
+- 5 dañados
+- 7 buenos
+
+Se seleccionan 4 bombillos sin reemplazo.
+
+¿Cuál es la probabilidad de que exactamente 2 estén dañados?
+
+Datos:
+
+- (N=12)
+- (K=5)
+- (n=4)
+- (x=2)
+
+Aplicando la fórmula:
+
+$$P(X=2)=\frac{\binom{5}{2}\binom{7}{2}}{\binom{12}{4}}$$
+
+Resultado:
+
+$$P(X=2)=0.4242$$
+
+o sea, **42.42%**.
+
+Donde:
+
+- `2` = éxitos deseados
+- `m` = éxitos en la población
+- `n` = fracasos en la población
+- `k` = tamaño de la muestra
+
+**Diferencia con binomial**
+
+- **Binomial:** con reemplazo o probabilidad constante.
+- **Hipergeométrica:** sin reemplazo.
+
+## .Ejercicio 12
+
+Un jefe de almacén sabe que 6 de las 25 bicicletas que tiene para la venta presentan fallas en los frenos y necesitan ajuste. Si el vendedor que no tenía conocimiento de lo anterior vendió en el día 4 bicicletas, ¿cuál es la probabilidad de que vendiera dos de las que requerían ajuste.
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Datos del problema
+N <- 25   # Total de bicicletas
+K <- 6    # Bicicletas con fallas
+n <- 4    # Bicicletas vendidas
+
+# Valores de X
+x <- 0:4
+
+# Probabilidades hipergeométricas
+fx <- round(dhyper(x,
+                   m = K,
+                   n = N - K,
+                   k = n), 4)
+
+# Probabilidad acumulada
+Fx <- round(phyper(x,
+                   m = K,
+                   n = N - K,
+                   k = n), 4)
+
+# Tabla de distribución
+df <- data.frame(
+  bicicletas_con_fallas_vendidas = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Mostrar tabla
+kable(df, align = "c",
+      caption = "Distribución Hipergeométrica - Bicicletas con fallas") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:4,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#fcb268")
+```
+
+## Función de probabilidad
+
+```{r}
+# Datos del problema
+N <- 25   # Total de bicicletas
+K <- 6    # Bicicletas con fallas
+n <- 4    # Bicicletas vendidas
+
+# Valores de X
+x <- 0:4
+
+# Probabilidades hipergeométricas
+probabilidad <- round(dhyper(x,
+                             m = K,
+                             n = N - K,
+                             k = n), 4)
+
+# Data frame
+df_1 <- data.frame(
+  bicicletas_con_fallas_vendidas = x,
+  probabilidad = probabilidad,
+  bicicletas_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = bicicletas_con_fallas_vendidas,
+           y = probabilidad)) +
+  geom_segment(aes(xend = bicicletas_end,
+                   yend = probabilidad_end),
+               color = "#fcb268",
+               size = 1) +
+  geom_point(color =  "#e284f5", size = 3) +
+  labs(title = "Función de probabilidad Hipergeométrica",
+       x = "Número de bicicletas con fallas vendidas",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+# Datos del problema
+N <- 25   # Total de bicicletas
+K <- 6    # Bicicletas con fallas
+n <- 4    # Bicicletas vendidas
+
+# Valores de X
+x <- 0:4
+
+# Probabilidad acumulada hipergeométrica
+prob_acumulada <- round(phyper(x,
+                               m = K,
+                               n = N - K,
+                               k = n), 4)
+
+# Data frame
+df_2 <- data.frame(
+  bicicletas_con_fallas_vendidas = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = bicicletas_con_fallas_vendidas,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#fcb268", size = 1) +
+  geom_point(color =  "#e284f5", size = 3) +
+  labs(title = "Función de distribución acumulada Hipergeométrica",
+       x = "Número de bicicletas con fallas vendidas",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que vendiera dos de las que requerían ajuste.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Datos del problema
+N <- 25   # Total de bicicletas
+K <- 6    # Bicicletas con fallas
+n <- 4    # Bicicletas vendidas
+x <- 2    # Queremos exactamente 2 con fallas
+
+# Probabilidad hipergeométrica
+probabilidad <- round(dhyper(x,
+                             m = K,
+                             n = N - K,
+                             k = n), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 20.20%
+
+## GRÁFICA
+
+```{r}
+# Datos del problema
+N <- 25   # Total de bicicletas
+K <- 6    # Bicicletas con fallas
+n <- 4    # Bicicletas vendidas
+
+# Valores de X
+rango <- 0:4  
+
+# Probabilidades hipergeométricas
+prob_hipergeometrica <- round(dhyper(rango,
+                                     m = K,
+                                     n = N - K,
+                                     k = n), 4)
+
+# Data frame
+df_3 <- data.frame(
+  bicicletas_con_fallas_vendidas = rango,
+  probabilidad = prob_hipergeometrica
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = bicicletas_con_fallas_vendidas,
+           y = probabilidad,
+           fill = factor(ifelse(bicicletas_con_fallas_vendidas == 2,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de bicicletas con fallas vendidas") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución Hipergeométrica") +
+  scale_fill_manual(name = "",
+                    values = c("#fcb268",  "#e284f5"))
+```
+:::
+::::
+
+## .Ejercicio 13
+
+De un grupo de 20 ingenieros con doctorado, se seleccionan 10 para un alto cargo de una compañía. ¿Cuál es la probabilidad de que los 10 seleccionados incluya a los 5 ingenieros que tienen las mejores calificaciones del grupo de 20?
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Datos del problema
+N <- 20   # Total de ingenieros
+K <- 5    # Ingenieros con mejores calificaciones
+n <- 10   # Ingenieros seleccionados
+
+# Valores de X
+x <- 0:5
+
+# Probabilidades hipergeométricas
+fx <- round(dhyper(x,
+                   m = K,
+                   n = N - K,
+                   k = n), 4)
+
+# Probabilidad acumulada
+Fx <- round(phyper(x,
+                   m = K,
+                   n = N - K,
+                   k = n), 4)
+
+# Tabla de distribución
+df <- data.frame(
+  ingenieros_mejores_seleccionados = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Mostrar tabla
+kable(df, align = "c",
+      caption = "Distribución Hipergeométrica - Ingenieros seleccionados") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:5,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#fcb268")
+```
+
+## Función de probabilidad
+
+```{r}
+# Datos del problema
+N <- 20   # Total de ingenieros
+K <- 5    # Ingenieros con mejores calificaciones
+n <- 10   # Ingenieros seleccionados
+
+# Valores de X
+x <- 0:5
+
+# Probabilidades hipergeométricas
+probabilidad <- round(dhyper(x,
+                             m = K,
+                             n = N - K,
+                             k = n), 4)
+
+# Data frame
+df_1 <- data.frame(
+  ingenieros_mejores_seleccionados = x,
+  probabilidad = probabilidad,
+  ingenieros_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = ingenieros_mejores_seleccionados,
+           y = probabilidad)) +
+  geom_segment(aes(xend = ingenieros_end,
+                   yend = probabilidad_end),
+               color = "#fcb268",
+               size = 1) +
+  geom_point(color =  "#e284f5", size = 3) +
+  labs(title = "Función de probabilidad Hipergeométrica",
+       x = "Número de ingenieros con mejores calificaciones",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+# Datos del problema
+N <- 20   # Total de ingenieros
+K <- 5    # Ingenieros con mejores calificaciones
+n <- 10   # Ingenieros seleccionados
+
+# Valores de X
+x <- 0:5
+
+# Probabilidad acumulada hipergeométrica
+prob_acumulada <- round(phyper(x,
+                               m = K,
+                               n = N - K,
+                               k = n), 4)
+
+# Data frame
+df_2 <- data.frame(
+  ingenieros_mejores_seleccionados = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = ingenieros_mejores_seleccionados,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#fcb268", size = 1) +
+  geom_point(color =  "#e284f5", size = 3) +
+  labs(title = "Función de distribución acumulada Hipergeométrica",
+       x = "Número de ingenieros con mejores calificaciones",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que los 10 seleccionados incluya a los 5 ingenieros que tienen las mejores calificaciones del grupo de 20?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Datos del problema
+N <- 20   # Total de ingenieros
+K <- 5    # Ingenieros con mejores calificaciones
+n <- 10   # Ingenieros seleccionados
+x <- 5    # Queremos que estén incluidos los 5 mejores
+
+# Probabilidad hipergeométrica
+probabilidad <- round(dhyper(x,
+                             m = K,
+                             n = N - K,
+                             k = n), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 16.30%
+
+## GRÁFICA
+
+```{r}
+# Datos del problema
+N <- 20   # Total de ingenieros
+K <- 5    # Ingenieros con mejores calificaciones
+n <- 10   # Ingenieros seleccionados
+
+# Valores de X
+rango <- 0:5  
+
+# Probabilidades hipergeométricas
+prob_hipergeometrica <- round(dhyper(rango,
+                                     m = K,
+                                     n = N - K,
+                                     k = n), 4)
+
+# Data frame
+df_3 <- data.frame(
+  ingenieros_mejores_seleccionados = rango,
+  probabilidad = prob_hipergeometrica
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = ingenieros_mejores_seleccionados,
+           y = probabilidad,
+           fill = factor(ifelse(ingenieros_mejores_seleccionados == 5,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de ingenieros con mejores calificaciones") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución Hipergeométrica") +
+  scale_fill_manual(name = "",
+                    values = c("#e284f5", "#fcb268"))
+```
+:::
+::::
+
+## .Ejercicio 14
+
+Un almacén contiene diez maquinas impresoras, cuatro de las cuales están defectuosas. Una compañía selecciona al azar cinco de las maquinas, pensando que todas están en condiciones de trabajar, ¿cuál es la probabilidad de que las cinco maquinas estén en buen estado?
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Datos del problema
+N <- 10   # Total de máquinas impresoras
+K <- 6    # Máquinas en buen estado
+n <- 5    # Máquinas seleccionadas
+
+# Valores de X
+x <- 0:5
+
+# Probabilidades hipergeométricas
+fx <- round(dhyper(x,
+                   m = K,
+                   n = N - K,
+                   k = n), 4)
+
+# Probabilidad acumulada
+Fx <- round(phyper(x,
+                   m = K,
+                   n = N - K,
+                   k = n), 4)
+
+# Tabla de distribución
+df <- data.frame(
+  maquinas_en_buen_estado = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Mostrar tabla
+kable(df, align = "c",
+      caption = "Distribución Hipergeométrica - Máquinas impresoras") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:5,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#fcb268")
+```
+
+## Función de probabilidad
+
+```{r}
+# Datos del problema
+N <- 10   # Total de máquinas impresoras
+K <- 6    # Máquinas en buen estado
+n <- 5    # Máquinas seleccionadas
+
+# Valores de X
+x <- 0:5
+
+# Probabilidades hipergeométricas
+probabilidad <- round(dhyper(x,
+                             m = K,
+                             n = N - K,
+                             k = n), 4)
+
+# Data frame
+df_1 <- data.frame(
+  maquinas_en_buen_estado = x,
+  probabilidad = probabilidad,
+  maquinas_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = maquinas_en_buen_estado,
+           y = probabilidad)) +
+  geom_segment(aes(xend = maquinas_end,
+                   yend = probabilidad_end),
+               color = "#fcb268",
+               size = 1) +
+  geom_point(color = "#e284f5", size = 3) +
+  labs(title = "Función de probabilidad Hipergeométrica",
+       x = "Número de máquinas en buen estado",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+# Datos del problema
+N <- 10   # Total de máquinas impresoras
+K <- 6    # Máquinas en buen estado
+n <- 5    # Máquinas seleccionadas
+
+# Valores de X
+x <- 0:5
+
+# Probabilidad acumulada hipergeométrica
+prob_acumulada <- round(phyper(x,
+                               m = K,
+                               n = N - K,
+                               k = n), 4)
+
+# Data frame
+df_2 <- data.frame(
+  maquinas_en_buen_estado = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = maquinas_en_buen_estado,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#fcb268", size = 1) +
+  geom_point(color =  "#e284f5", size = 3) +
+  labs(title = "Función de distribución acumulada Hipergeométrica",
+       x = "Número de máquinas en buen estado",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+¿Cuál es la probabilidad de que las cinco maquinas estén en buen estado?
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Datos del problema
+N <- 10   # Total de máquinas impresoras
+K <- 6    # Máquinas en buen estado
+n <- 5    # Máquinas seleccionadas
+x <- 5    # Queremos que las 5 estén en buen estado
+
+# Probabilidad hipergeométrica
+probabilidad <- round(dhyper(x,
+                             m = K,
+                             n = N - K,
+                             k = n), 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 02.38%
+
+## GRÁFICA
+
+```{r}
+# Datos del problema
+N <- 10   # Total de máquinas impresoras
+K <- 6    # Máquinas en buen estado
+n <- 5    # Máquinas seleccionadas
+
+# Valores de X
+rango <- 0:5  
+
+# Probabilidades hipergeométricas
+prob_hipergeometrica <- round(dhyper(rango,
+                                     m = K,
+                                     n = N - K,
+                                     k = n), 4)
+
+# Data frame
+df_3 <- data.frame(
+  maquinas_en_buen_estado = rango,
+  probabilidad = prob_hipergeometrica
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = maquinas_en_buen_estado,
+           y = probabilidad,
+           fill = factor(ifelse(maquinas_en_buen_estado == 5,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de máquinas en buen estado") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución Hipergeométrica") +
+  scale_fill_manual(name = "",
+                    values = c("#fcb268", "#e284f5"))
+```
+:::
+::::
+
+## .Ejercicio 15
+
+La probabilidad de que un estudiante de aviación pase la prueba escrita para obtener su licencia de piloto privado es de 0.7. encuentre la probabilidad de que una persona pase la prueba antes del cuarto intento.
+
+## .EXPLICACION Y ARGUMENTO
+
+La distribución **hipergeométrica no aplica** en este ejercicio.
+
+La hipergeométrica se usa cuando:
+
+- Hay una población finita.
+- Se selecciona sin reemplazo.
+- Existe un número fijo de éxitos y fracasos en la población.
+
+Aquí:
+
+- Cada intento es independiente.
+- La probabilidad de aprobar sigue siendo (0.7) en cada intento.
+- No hay una población finita de exámenes “buenos” o “malos”.
+
+Por eso el modelo correcto es la **distribución geométrica**.
+
+La probabilidad de aprobar antes del cuarto intento es:
+
+$$P(X<4)=1−(0.3)^3=0.973$$
+
+Resultado:
+
+$$0.973$$
+
+## .Solución
+
+::: panel-tabset
+## Tabla
+
+```{r}
+# Datos del problema
+p <- 0.7   # Probabilidad de aprobar
+
+# Valores de X (intentos)
+x <- 1:6
+
+# Probabilidades geométricas
+fx <- round(dgeom(x - 1, prob = p), 4)
+
+# Probabilidad acumulada
+Fx <- round(pgeom(x - 1, prob = p), 4)
+
+# Tabla de distribución
+df <- data.frame(
+  numero_intento = x,
+  probabilidad = fx,
+  probabilidad_acumulada = Fx
+)
+
+# Mostrar tabla
+kable(df, align = "c",
+      caption = "Distribución Geométrica - Prueba de piloto") %>% 
+  kable_styling("striped", full_width = FALSE) %>%
+  column_spec(1, bold = TRUE) %>%
+  row_spec(0:6,
+           bold = TRUE,
+           color = "#0d0d0d",
+           background = "#72fc84")
+```
+
+## Función de probabilidad
+
+```{r}
+# Datos del problema
+p <- 0.7   # Probabilidad de aprobar
+
+# Valores de X (intentos)
+x <- 1:6
+
+# Probabilidades geométricas
+probabilidad <- round(dgeom(x - 1, prob = p), 4)
+
+# Data frame
+df_1 <- data.frame(
+  numero_intento = x,
+  probabilidad = probabilidad,
+  intento_end = x,
+  probabilidad_end = 0
+)
+
+# Gráfica
+ggplot(df_1,
+       aes(x = numero_intento,
+           y = probabilidad)) +
+  geom_segment(aes(xend = intento_end,
+                   yend = probabilidad_end),
+               color = "#72fc84",
+               size = 1) +
+  geom_point(color = "#eff547", size = 3) +
+  labs(title = "Función de probabilidad Geométrica",
+       x = "Número de intento",
+       y = "Probabilidad")
+```
+
+## Función de distribución
+
+```{r}
+# Datos del problema
+p <- 0.7   # Probabilidad de aprobar
+
+# Valores de X (intentos)
+x <- 1:6
+
+# Probabilidad acumulada geométrica
+prob_acumulada <- round(pgeom(x - 1, prob = p), 4)
+
+# Data frame
+df_2 <- data.frame(
+  numero_intento = x,
+  probabilidad_acumulada = prob_acumulada
+)
+
+# Gráfica
+ggplot(df_2,
+       aes(x = numero_intento,
+           y = probabilidad_acumulada)) +
+  geom_step(color = "#72fc84", size = 1) +
+  geom_point(color = "#eff547", size = 3) +
+  labs(title = "Función de distribución acumulada Geométrica",
+       x = "Número de intento",
+       y = "Probabilidad acumulada")
+```
+:::
+
+## .Solución incisos
+
+:::: panel-tabset
+## Inciso A)
+
+Encuentre la probabilidad de que una persona pase la prueba antes del cuarto intento.
+
+::: panel-tabset
+## RESPUESTA
+
+```{r}
+# Datos del problema
+p <- 0.7   # Probabilidad de aprobar
+x <- 4     # Antes del cuarto intento
+
+# Probabilidad geométrica
+probabilidad <- round(1 - (1 - p)^3, 4)
+
+# Resultado
+print(probabilidad)
+```
+
+La probabilidad es de 97.3%
+
+## GRÁFICA
+
+```{r}
+# Datos del problema
+p <- 0.7   # Probabilidad de aprobar
+
+# Valores de X (intentos)
+rango <- 1:6  
+
+# Probabilidades geométricas
+prob_geometrica <- round(dgeom(rango - 1, prob = p), 4)
+
+# Data frame
+df_3 <- data.frame(
+  numero_intento = rango,
+  probabilidad = prob_geometrica
+)
+
+# Gráfica
+ggplot(df_3,
+       aes(x = numero_intento,
+           y = probabilidad,
+           fill = factor(ifelse(numero_intento == 3,
+                                "Valor",
+                                "Resto")))) +
+  geom_bar(stat = "identity", width = 0.25) +
+  xlab("Número de intento") +
+  ylab("Probabilidad") +
+  ggtitle("Distribución Geométrica") +
+  scale_fill_manual(name = "",
+                    values = c("#72fc84", "#eff547"))
+```
+:::
+::::
