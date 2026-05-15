@@ -1953,6 +1953,7 @@ ggplot(df_3,
 :::
 ::::
 
+
 # .Distribución Hipergeométrica
 
 La **Distribución hipergeométrica** se usa cuando:
@@ -1963,7 +1964,9 @@ La **Distribución hipergeométrica** se usa cuando:
 
 **Fórmula**
 
-$$P(X=x)=\frac{\binom{K}{x}\binom{N-K}{n-x}}{\binom{N}{n}}$$ \### Significado de las letras
+$$P(X=x)=\frac{\binom{K}{x}\binom{N-K}{n-x}}{\binom{N}{n}}$$ \
+
+**Significado de las letras**
 
 - $N$ = tamaño de la población
 - $K$ = número de éxitos en la población
